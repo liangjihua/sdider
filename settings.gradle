@@ -10,4 +10,5 @@
 rootProject.name = 'sdider'
 include 'sdider-crawler-api'
 include 'sdider-core'
+include 'sdider-default-crawler'
 
