@@ -3,14 +3,13 @@ package com.sdider.impl;
 import com.sdider.api.Configuration;
 import com.sdider.api.exception.NoSuchPropertyException;
 import com.sdider.impl.common.DefaultDynamicPropertiesObject;
+import com.sdider.impl.log.Logger;
 import com.sdider.impl.request.DefaultRequestConfigImpl;
 import com.sdider.utils.ClosureUtils;
 import groovy.lang.Closure;
 import groovy.lang.GroovyObjectSupport;
 import groovy.lang.MissingPropertyException;
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.Set;
@@ -19,7 +18,7 @@ import java.util.Set;
  * @author yujiaxin
  */
 public class DefaultConfigurationImpl extends GroovyObjectSupport implements Configuration {
-    private static final Logger logger = LoggerFactory.getLogger(DefaultConfigurationImpl.class);
+    private static final Logger logger = Logger.getInstance(DefaultConfigurationImpl.class);
     private final DefaultDynamicPropertiesObject<Object> properties = new DefaultDynamicPropertiesObject<>();
 
     @Override
