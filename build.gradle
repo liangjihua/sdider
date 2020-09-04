@@ -10,3 +10,14 @@ subprojects {
 }
 
 description = '基于DSL脚本的爬虫程序'
+
+apply plugin: 'application'
+
+application {
+    mainClassName = 'com.sdider.main.Main'
+}
+
+dependencies {
+    runtime project(':sdider-core')
+    runtime project(':sdider-default-crawler')
+}
