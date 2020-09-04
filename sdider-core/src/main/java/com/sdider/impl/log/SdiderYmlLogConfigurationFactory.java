@@ -1,4 +1,4 @@
-package sdider.impl.log;
+package com.sdider.impl.log;
 
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;

@@ -1,6 +1,6 @@
 package com.sdider.impl.request
 
-import com.sdider.crawler.Request
+import com.sdider.api.Request
 import spock.lang.Specification
 
 abstract class AbstractRequestContainerTest extends Specification {

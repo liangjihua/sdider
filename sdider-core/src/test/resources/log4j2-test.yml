@@ -1,0 +1,16 @@
+Configuration:
+  status: warn
+  name: test
+  thresholdFilter:
+    level: debug
+  appenders:
+    Console:
+      name: STDOUT
+      target: SYSTEM_OUT
+      PatternLayout:
+        Pattern: "%-d{yyyy-MM-dd HH:mm:ss} [%c]-[%p] %m%n"
+  Loggers:
+    Root:
+      level: warn
+      AppenderRef:
+        - ref: STDOUT

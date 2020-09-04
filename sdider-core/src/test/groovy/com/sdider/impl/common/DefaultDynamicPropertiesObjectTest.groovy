@@ -1,7 +1,7 @@
 package com.sdider.impl.common
 
 import com.sdider.AbstractDynamicPropertiesObjectTest
-import com.sdider.crawler.common.DynamicPropertiesObject
+import com.sdider.api.common.DynamicPropertiesObject
 
 class DefaultDynamicPropertiesObjectTest extends AbstractDynamicPropertiesObjectTest {
 

@@ -1,4 +1,4 @@
-package sdider.main;
+package com.sdider.main;
 
 import com.sdider.impl.AbstractSdider;
 import com.sdider.impl.DefaultSdider;

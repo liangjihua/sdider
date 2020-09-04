@@ -1,7 +1,7 @@
 package com.sdider
 
-import com.sdider.crawler.common.DynamicPropertiesObject
-import com.sdider.crawler.exception.NoSuchPropertyException
+import com.sdider.api.common.DynamicPropertiesObject
+import com.sdider.api.exception.NoSuchPropertyException
 import spock.lang.Specification
 
 abstract class AbstractDynamicPropertiesObjectTest extends Specification{

@@ -1,8 +1,8 @@
-package sdider.impl.response;
+package com.sdider.impl.response;
 
 import com.sdider.ResponseConverter;
 import com.sdider.SdiderResponse;
-import com.sdider.crawler.Response;
+import com.sdider.api.Response;
 import groovy.lang.GroovyObjectSupport;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.jsoup.Jsoup;

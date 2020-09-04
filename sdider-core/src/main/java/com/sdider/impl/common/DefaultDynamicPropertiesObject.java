@@ -1,7 +1,7 @@
-package sdider.impl.common;
+package com.sdider.impl.common;
 
-import com.sdider.crawler.common.DynamicPropertiesObject;
-import com.sdider.crawler.exception.NoSuchPropertyException;
+import com.sdider.api.common.DynamicPropertiesObject;
+import com.sdider.api.exception.NoSuchPropertyException;
 import groovy.lang.GString;
 import groovy.lang.GroovyObjectSupport;
 import groovy.lang.MissingMethodException;

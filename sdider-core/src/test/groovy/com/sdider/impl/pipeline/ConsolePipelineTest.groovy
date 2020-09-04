@@ -1,7 +1,7 @@
 package com.sdider.impl.pipeline
 
-import com.sdider.crawler.Item
-import com.sdider.crawler.Request
+import com.sdider.api.Item
+import com.sdider.api.Request
 import spock.lang.Shared
 import spock.lang.Specification
 

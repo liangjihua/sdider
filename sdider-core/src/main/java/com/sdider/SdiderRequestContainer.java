@@ -1,6 +1,6 @@
-package sdider;
+package com.sdider;
 
-import com.sdider.crawler.RequestContainer;
+import com.sdider.api.RequestContainer;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 

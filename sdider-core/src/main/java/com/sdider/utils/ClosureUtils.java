@@ -1,4 +1,4 @@
-package sdider.utils;
+package com.sdider.utils;
 
 import groovy.lang.Closure;
 

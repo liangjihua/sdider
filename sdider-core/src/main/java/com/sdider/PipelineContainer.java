@@ -1,6 +1,6 @@
-package sdider;
+package com.sdider;
 
-import com.sdider.crawler.Pipeline;
+import com.sdider.api.Pipeline;
 
 import java.util.List;
 

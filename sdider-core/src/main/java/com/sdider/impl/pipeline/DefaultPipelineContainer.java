@@ -1,7 +1,7 @@
-package sdider.impl.pipeline;
+package com.sdider.impl.pipeline;
 
 import com.sdider.PipelineContainer;
-import com.sdider.crawler.Pipeline;
+import com.sdider.api.Pipeline;
 import com.sdider.impl.exception.UndefinedPipelineException;
 import groovy.lang.GroovyObjectSupport;
 import groovy.lang.MissingPropertyException;

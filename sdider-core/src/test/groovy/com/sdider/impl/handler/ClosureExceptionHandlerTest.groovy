@@ -2,7 +2,7 @@ package com.sdider.impl.handler
 
 import com.sdider.ResponseConverter
 import com.sdider.SdiderResponse
-import com.sdider.crawler.Request
+import com.sdider.api.Request
 import spock.lang.Specification
 
 class ClosureExceptionHandlerTest extends Specification {

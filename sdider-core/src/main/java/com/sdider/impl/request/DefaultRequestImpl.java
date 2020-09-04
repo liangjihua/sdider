@@ -1,8 +1,8 @@
-package sdider.impl.request;
+package com.sdider.impl.request;
 
 import com.sdider.RequestConfig;
 import com.sdider.SdiderRequest;
-import com.sdider.crawler.exception.NoSuchPropertyException;
+import com.sdider.api.exception.NoSuchPropertyException;
 import com.sdider.impl.common.DefaultDynamicPropertiesObject;
 import com.sdider.utils.ClosureUtils;
 import groovy.lang.Closure;

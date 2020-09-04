@@ -1,6 +1,6 @@
 package com.sdider.impl.pipeline
 
-import com.sdider.crawler.Pipeline
+import com.sdider.api.Pipeline
 import com.sdider.impl.exception.UndefinedPipelineException
 import spock.lang.Specification
 

@@ -1,4 +1,4 @@
-package sdider.impl.log;
+package com.sdider.impl.log;
 
 import com.sdider.utils.ClosureUtils;
 import groovy.lang.Closure;

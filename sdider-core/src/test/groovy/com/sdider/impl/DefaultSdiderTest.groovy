@@ -1,9 +1,9 @@
 package com.sdider.impl
 
-import com.sdider.crawler.ExceptionHandler
-import com.sdider.crawler.Item
-import com.sdider.crawler.Request
-import com.sdider.crawler.Response
+import com.sdider.api.ExceptionHandler
+import com.sdider.api.Item
+import com.sdider.api.Request
+import com.sdider.api.Response
 import spock.lang.Ignore
 import spock.lang.Specification
 

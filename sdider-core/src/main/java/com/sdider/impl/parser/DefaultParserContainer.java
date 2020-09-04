@@ -1,7 +1,7 @@
-package sdider.impl.parser;
+package com.sdider.impl.parser;
 
 import com.sdider.ParserContainer;
-import com.sdider.crawler.ResponseParser;
+import com.sdider.api.ResponseParser;
 import groovy.lang.GroovyObjectSupport;
 import groovy.lang.MissingPropertyException;
 

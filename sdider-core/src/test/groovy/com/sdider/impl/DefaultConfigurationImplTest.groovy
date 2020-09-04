@@ -1,7 +1,7 @@
 package com.sdider.impl
 
 import com.sdider.AbstractDynamicPropertiesObjectTest
-import com.sdider.crawler.common.DynamicPropertiesObject
+import com.sdider.api.common.DynamicPropertiesObject
 import spock.lang.Ignore
 
 @Ignore("Configuration 需要调整，可能不再适用于DynamicPropertiesObject")

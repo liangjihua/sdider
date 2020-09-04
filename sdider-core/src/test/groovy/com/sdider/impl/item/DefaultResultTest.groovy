@@ -1,8 +1,8 @@
 package com.sdider.impl.item
 
-import com.sdider.crawler.Item
-import com.sdider.crawler.Pipeline
-import com.sdider.crawler.Request
+import com.sdider.api.Item
+import com.sdider.api.Pipeline
+import com.sdider.api.Request
 import com.sdider.impl.request.AbstractRequestContainer
 import com.sdider.impl.request.AbstractRequestContainerTest
 

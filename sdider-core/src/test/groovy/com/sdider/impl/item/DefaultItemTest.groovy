@@ -1,10 +1,10 @@
 package com.sdider.impl.item
 
 import com.sdider.AbstractDynamicPropertiesObjectTest
-import com.sdider.crawler.Pipeline
-import com.sdider.crawler.PipelineFilter
-import com.sdider.crawler.Request
-import com.sdider.crawler.common.DynamicPropertiesObject
+import com.sdider.api.Pipeline
+import com.sdider.api.PipelineFilter
+import com.sdider.api.Request
+import com.sdider.api.common.DynamicPropertiesObject
 
 class DefaultItemTest extends AbstractDynamicPropertiesObjectTest {
     Request request

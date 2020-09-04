@@ -1,7 +1,7 @@
-package sdider.impl.pipeline;
+package com.sdider.impl.pipeline;
 
-import com.sdider.crawler.Item;
-import com.sdider.crawler.impl.pipeline.PipelineBase;
+import com.sdider.api.Item;
+import com.sdider.api.impl.pipeline.PipelineBase;
 import com.sdider.utils.ClosureUtils;
 import groovy.lang.Closure;
 

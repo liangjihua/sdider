@@ -1,10 +1,10 @@
-package sdider.impl;
+package com.sdider.impl;
 
 import com.sdider.ExtensionContainer;
 import com.sdider.Sdider;
-import com.sdider.crawler.Crawler;
-import com.sdider.crawler.CrawlerFactory;
-import com.sdider.crawler.common.DynamicPropertiesObject;
+import com.sdider.api.Crawler;
+import com.sdider.api.CrawlerFactory;
+import com.sdider.api.common.DynamicPropertiesObject;
 import com.sdider.impl.exception.SdiderExecuteException;
 import com.sdider.utils.ClosureUtils;
 import groovy.lang.Closure;

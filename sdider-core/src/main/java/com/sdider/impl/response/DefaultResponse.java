@@ -1,11 +1,11 @@
-package sdider.impl.response;
+package com.sdider.impl.response;
 
 import com.sdider.ExtensionContainer;
 import com.sdider.SdiderResponse;
 import com.sdider.SdiderResult;
+import com.sdider.api.Request;
+import com.sdider.api.Response;
 import com.sdider.constant.HttpHeader;
-import com.sdider.crawler.Request;
-import com.sdider.crawler.Response;
 import com.sdider.impl.common.DefaultExtensionContainer;
 import com.sdider.impl.item.DefaultResult;
 import groovy.lang.GroovyObjectSupport;

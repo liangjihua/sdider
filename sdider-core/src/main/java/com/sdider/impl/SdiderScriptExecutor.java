@@ -1,4 +1,4 @@
-package sdider.impl;
+package com.sdider.impl;
 
 import com.sdider.Sdider;
 import groovy.lang.Binding;

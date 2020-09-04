@@ -4,8 +4,8 @@ import com.sdider.ExtensionContainer
 import com.sdider.ParserContainer
 import com.sdider.PipelineContainer
 import com.sdider.SdiderRequestContainer
-import com.sdider.crawler.*
-import com.sdider.crawler.common.DynamicPropertiesObject
+import com.sdider.api.*
+import com.sdider.api.common.DynamicPropertiesObject
 import org.slf4j.Logger
 import spock.lang.Specification
 

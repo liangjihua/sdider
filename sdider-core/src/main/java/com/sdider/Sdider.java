@@ -1,9 +1,9 @@
-package sdider;
+package com.sdider;
 
-import com.sdider.crawler.Configuration;
-import com.sdider.crawler.ExceptionHandler;
-import com.sdider.crawler.Pipeline;
-import com.sdider.crawler.common.DynamicPropertiesObject;
+import com.sdider.api.Configuration;
+import com.sdider.api.ExceptionHandler;
+import com.sdider.api.Pipeline;
+import com.sdider.api.common.DynamicPropertiesObject;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.lang.GroovyObject;

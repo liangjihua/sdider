@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+    id 'groovy'
+}
+
+dependencies {
+    implementation project(':sdider-crawler-api')
+    implementation 'org.apache.ivy:ivy:2.5.0' //用于支持脚本使用注解声明内置依赖
+    implementation 'org.jsoup:jsoup:1.13.1'
+    implementation 'org.codehaus.groovy:groovy:3.0.5'
+    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.13.3'
+    implementation 'org.apache.logging.log4j:log4j-core:2.13.3'
+    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.2'
+    implementation 'org.codehaus.groovy:groovy-sql:3.0.5'
+    implementation 'org.postgresql:postgresql:9.4.1212'
+    implementation 'redis.clients:jedis:2.7.3'
+    annotationProcessor 'org.apache.logging.log4j:log4j-core:2.13.3'
+
+    testImplementation 'org.spockframework:spock-core:2.0-M3-groovy-3.0'
+    testImplementation 'cglib:cglib-nodep:3.3.0'
+}
+
+test {
+    useJUnitPlatform()
+}

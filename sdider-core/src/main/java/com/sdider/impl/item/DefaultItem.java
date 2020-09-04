@@ -1,9 +1,9 @@
-package sdider.impl.item;
+package com.sdider.impl.item;
 
 import com.sdider.SdiderItem;
-import com.sdider.crawler.Pipeline;
-import com.sdider.crawler.PipelineFilter;
-import com.sdider.crawler.Request;
+import com.sdider.api.Pipeline;
+import com.sdider.api.PipelineFilter;
+import com.sdider.api.Request;
 import com.sdider.impl.common.DefaultDynamicPropertiesObject;
 import com.sdider.utils.ClosureUtils;
 import groovy.lang.*;

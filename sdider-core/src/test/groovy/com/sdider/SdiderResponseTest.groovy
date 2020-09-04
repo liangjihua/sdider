@@ -1,7 +1,7 @@
 package com.sdider
 
-import com.sdider.crawler.Item
-import com.sdider.crawler.Request
+import com.sdider.api.Item
+import com.sdider.api.Request
 import spock.lang.Specification
 
 class SdiderResponseTest extends Specification {

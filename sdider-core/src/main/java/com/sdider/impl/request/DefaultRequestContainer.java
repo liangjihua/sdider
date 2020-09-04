@@ -1,4 +1,4 @@
-package sdider.impl.request;
+package com.sdider.impl.request;
 
 import com.sdider.SdiderRequest;
 import com.sdider.utils.ClosureUtils;

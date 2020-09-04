@@ -1,8 +1,8 @@
-package sdider;
+package com.sdider;
 
-import com.sdider.crawler.Response;
-import com.sdider.crawler.ResponseParser;
-import com.sdider.crawler.Result;
+import com.sdider.api.Response;
+import com.sdider.api.ResponseParser;
+import com.sdider.api.Result;
 
 /**
  * ParserContainer实现了{@link ResponseParser}，管理一组命名的{@link ResponseParser}，

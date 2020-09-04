@@ -1,8 +1,8 @@
 package com.sdider
 
-import com.sdider.crawler.Request
-import com.sdider.crawler.Response
-import com.sdider.crawler.ResponseParser
+import com.sdider.api.Request
+import com.sdider.api.Response
+import com.sdider.api.ResponseParser
 import spock.lang.Specification
 
 class ParserContainerTest extends Specification {

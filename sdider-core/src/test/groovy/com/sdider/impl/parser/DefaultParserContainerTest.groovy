@@ -1,6 +1,6 @@
 package com.sdider.impl.parser
 
-import com.sdider.crawler.ResponseParser
+import com.sdider.api.ResponseParser
 import spock.lang.Specification
 
 class DefaultParserContainerTest extends Specification {

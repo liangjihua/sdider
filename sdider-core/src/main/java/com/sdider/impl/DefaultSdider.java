@@ -1,7 +1,8 @@
-package sdider.impl;
+package com.sdider.impl;
 
-import com.sdider.crawler.*;
-import com.sdider.crawler.common.DynamicPropertiesObject;
+import com.sdider.*;
+import com.sdider.api.*;
+import com.sdider.api.common.DynamicPropertiesObject;
 import com.sdider.impl.common.DefaultDynamicPropertiesObject;
 import com.sdider.impl.common.DefaultExtensionContainer;
 import com.sdider.impl.handler.ClosureExceptionHandler;

@@ -2,7 +2,7 @@ package com.sdider.impl.parser
 
 import com.sdider.ResponseConverter
 import com.sdider.SdiderResponse
-import com.sdider.crawler.Response
+import com.sdider.api.Response
 import spock.lang.Specification
 
 class ClosureParserTest extends Specification {

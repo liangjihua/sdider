@@ -1,0 +1,3 @@
+startRequests {
+    request 'http://foo.bar'
+}

@@ -1,8 +1,8 @@
 package com.sdider.impl.handler
 
 import com.sdider.ResponseConverter
-import com.sdider.crawler.Request
-import com.sdider.crawler.Response
+import com.sdider.api.Request
+import com.sdider.api.Response
 import spock.lang.Specification
 
 class ExceptionHandlerBaseTest extends Specification {

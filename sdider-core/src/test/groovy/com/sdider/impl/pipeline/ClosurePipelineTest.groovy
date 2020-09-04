@@ -1,6 +1,6 @@
 package com.sdider.impl.pipeline
 
-import com.sdider.crawler.Item
+import com.sdider.api.Item
 import spock.lang.Specification
 
 class ClosurePipelineTest extends Specification {

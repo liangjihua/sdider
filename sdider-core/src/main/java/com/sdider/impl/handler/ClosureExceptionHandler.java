@@ -1,10 +1,10 @@
-package sdider.impl.handler;
+package com.sdider.impl.handler;
 
 import com.sdider.ExceptionHolder;
 import com.sdider.ResponseConverter;
 import com.sdider.SdiderResponse;
-import com.sdider.crawler.Request;
-import com.sdider.crawler.RequestContainer;
+import com.sdider.api.Request;
+import com.sdider.api.RequestContainer;
 import com.sdider.utils.ClosureUtils;
 import groovy.lang.Closure;
 

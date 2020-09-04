@@ -1,10 +1,10 @@
-package sdider.impl.parser;
+package com.sdider.impl.parser;
 
 import com.sdider.ResponseConverter;
 import com.sdider.SdiderResponse;
-import com.sdider.crawler.Response;
-import com.sdider.crawler.ResponseParser;
-import com.sdider.crawler.Result;
+import com.sdider.api.Response;
+import com.sdider.api.ResponseParser;
+import com.sdider.api.Result;
 import com.sdider.utils.ClosureUtils;
 import groovy.lang.Closure;
 

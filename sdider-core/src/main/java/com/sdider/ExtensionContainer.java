@@ -1,4 +1,4 @@
-package sdider;
+package com.sdider;
 
 import groovy.lang.MissingPropertyException;
 

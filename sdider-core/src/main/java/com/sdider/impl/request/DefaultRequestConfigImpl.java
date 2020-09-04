@@ -1,8 +1,8 @@
-package sdider.impl.request;
+package com.sdider.impl.request;
 
 import com.sdider.RequestConfig;
+import com.sdider.api.common.DynamicPropertiesObject;
 import com.sdider.constant.HttpHeader;
-import com.sdider.crawler.common.DynamicPropertiesObject;
 import com.sdider.impl.common.DefaultDynamicPropertiesObject;
 import com.sdider.utils.ClosureUtils;
 import groovy.lang.Closure;

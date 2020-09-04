@@ -1,4 +1,4 @@
-package sdider.impl.common;
+package com.sdider.impl.common;
 
 import com.sdider.ExtensionContainer;
 import groovy.lang.GroovyObjectSupport;

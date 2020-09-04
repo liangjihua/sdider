@@ -1,4 +1,4 @@
-package sdider.impl.log;
+package com.sdider.impl.log;
 
 /**
  *

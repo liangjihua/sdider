@@ -1,0 +1,42 @@
+## log4j2的filter系统有四层：configuration 级别filter，logger级别filter，appender级别filter，appenderRef级别filter
+## filter通过的顺序：configuration -> logger -> appenderRef -> appender，通常应该会将configuration级别的filter设置为debug
+## 然后在logger级别或appender级别去细粒度的控制filter
+##   by yujiaxin
+Configuration:
+  status: warn
+  name: ${sys:configurationName}
+  shutdownHook: disable
+  properties:
+    property:
+      name: filename
+      value: ${sys:logFilename}
+  thresholdFilter:
+    level: debug
+  appenders:
+    Console:
+      name: STDOUT
+      target: SYSTEM_OUT
+      PatternLayout:
+        Pattern: "%-d{yyyy-MM-dd HH:mm:ss} [%c]-[%p] %m%n"
+    RollingFile:
+      name: ROLLING_FILE
+      fileName: ${filename}
+      filePattern: "${filename}-%d{yyyy-MM-dd}-%i.log.gz"
+      PatternLayout:
+        Pattern: "%-d{yyyy-MM-dd HH:mm:ss} [%c]-[%p] %m%n"
+      Filters:
+        ThresholdFilter:
+          level: info
+      Policies:
+        TimeBasedTriggeringPolicy:  # 按天分类
+          modulate: true
+          interval: 1
+      DefaultRolloverStrategy:     # 文件最多100个
+        max: 100
+
+  Loggers:
+    Root:
+      level: error
+      AppenderRef:
+        - ref: STDOUT
+        - ref: ROLLING_FILE

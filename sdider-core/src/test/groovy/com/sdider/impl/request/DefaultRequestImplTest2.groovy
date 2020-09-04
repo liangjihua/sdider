@@ -1,7 +1,7 @@
 package com.sdider.impl.request
 
 import com.sdider.AbstractDynamicPropertiesObjectTest
-import com.sdider.crawler.common.DynamicPropertiesObject
+import com.sdider.api.common.DynamicPropertiesObject
 
 import static com.sdider.RequestConfig.APPLICATION_FORM_URLENCODED
 import static com.sdider.RequestConfig.UA_FIREFOX

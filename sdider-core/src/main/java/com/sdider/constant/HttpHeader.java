@@ -1,4 +1,4 @@
-package sdider.constant;
+package com.sdider.constant;
 
 /**
  *

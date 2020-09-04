@@ -1,8 +1,8 @@
-package sdider;
+package com.sdider;
 
-import com.sdider.crawler.Item;
-import com.sdider.crawler.Pipeline;
-import com.sdider.crawler.PipelineFilter;
+import com.sdider.api.Item;
+import com.sdider.api.Pipeline;
+import com.sdider.api.PipelineFilter;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.lang.GroovyObject;

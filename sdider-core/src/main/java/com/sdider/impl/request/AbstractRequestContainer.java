@@ -1,7 +1,7 @@
-package sdider.impl.request;
+package com.sdider.impl.request;
 
 import com.sdider.SdiderRequestContainer;
-import com.sdider.crawler.Request;
+import com.sdider.api.Request;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

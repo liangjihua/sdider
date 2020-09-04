@@ -1,7 +1,7 @@
-package sdider.impl;
+package com.sdider.impl;
 
-import com.sdider.crawler.Configuration;
-import com.sdider.crawler.exception.NoSuchPropertyException;
+import com.sdider.api.Configuration;
+import com.sdider.api.exception.NoSuchPropertyException;
 import com.sdider.impl.common.DefaultDynamicPropertiesObject;
 import com.sdider.impl.request.DefaultRequestConfigImpl;
 import com.sdider.utils.ClosureUtils;
