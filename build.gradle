@@ -26,6 +26,8 @@ distributions {
     main {
         contents {
             from 'gitee.sdider'
+            from 'README.md'
+            from 'README.en.md'
         }
     }
 }
