@@ -43,8 +43,8 @@ parser {    //declare a response parser
 I think the above script is not difficult for people with programming experience to understand. The sdider script is 
 mainly composed of some declarative DSL blocks. Those who have used **gradle** may find it familiar. In fact, it is the 
 same as **gradle**. The DSL of the sdider script is also developed in Groovy. Those who are familiar with Groovy should 
-be very familiar with it. easy to use. It doesn't matter if you haven't used Groovy, because Groovy is fully compatible 
-with Java syntax (support for Java native lambda expressions was also added in 3.0).
+be very familiar with it. It doesn’t matter if you have no Groovy experience, because Groovy is fully compatible with 
+Java (support for Java native lambda expressions was also added in 3.0).
 
 The above script has been included in the sdider distribution package. Use `./bin/sdider gitee.sdider` (in windows, use 
 `.\bin\sdider.bat`) to run the script in the main directory of sdider.
