@@ -68,6 +68,9 @@ public class DefaultResult extends AbstractRequestContainer implements SdiderRes
     public void request(@DelegatesTo(SdiderRequest.class) Closure<?> requestConfig) {
         SdiderRequest request = new DefaultRequestImpl();
         ClosureUtils.delegateRun(request, requestConfig);
+        if (request.getUrl() == null || request.getUrl().trim().equals("")) {
+            return;
+        }
         request.url(urlClean(request.getUrl()));
         addRequest(request);
     }
@@ -75,10 +78,13 @@ public class DefaultResult extends AbstractRequestContainer implements SdiderRes
     @Override
     public void request(String... urls) {
         if (urls == null) {
-            logger.warn("请求url为null，跳过");
             return;
         }
         for (String url : urls) {
+            if (url == null || url.trim().equals("")){
+                logger.debug("url skipped: {'url':{}, 'reason':'url is empty'}", url);
+                continue;
+            }
             url = urlClean(url);
             SdiderRequest request = new DefaultRequestImpl();
             request.GET(url);
