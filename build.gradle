@@ -21,3 +21,12 @@ dependencies {
     runtime project(':sdider-core')
     runtime project(':sdider-default-crawler')
 }
+
+distributions {
+    main {
+        contents {
+            from 'gitee.sdider'
+        }
+    }
+}
+

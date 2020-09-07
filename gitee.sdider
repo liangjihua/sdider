@@ -1,0 +1,27 @@
+configuration {
+    requests {
+        userAgent UA_FIREFOX
+    }
+}
+
+startRequests {
+    request "https://gitee.com/explore/all"
+}
+
+parser {
+    items {
+        def contentList = css.select('div.explore-repo__list div.content')
+        for (def e : contentList) {
+            item {
+                title           e.select('h3').text()
+                watch           e.select('div.pull-right > a:nth-child(1) > span').text()
+                star            e.select('div.pull-right > a:nth-child(2) > span').text()
+                fork            e.select('div.pull-right > a:nth-child(3) > span').text()
+                'project-meta'  e.select('.project-meta').text()
+            }
+        }
+    }
+    targets{
+        request css.select('div.pagination > a[rel=next]').attr('href')
+    }
+}
