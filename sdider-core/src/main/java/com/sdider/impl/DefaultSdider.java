@@ -5,6 +5,7 @@ import com.sdider.api.*;
 import com.sdider.api.common.DynamicPropertiesObject;
 import com.sdider.impl.common.DefaultDynamicPropertiesObject;
 import com.sdider.impl.common.DefaultExtensionContainer;
+import com.sdider.impl.exception.SdiderExecuteException;
 import com.sdider.impl.handler.ClosureExceptionHandler;
 import com.sdider.impl.handler.ExceptionHandlerBase;
 import com.sdider.impl.log.LogConfiguration;
@@ -14,12 +15,13 @@ import com.sdider.impl.parser.DefaultParserContainer;
 import com.sdider.impl.pipeline.ClosurePipeline;
 import com.sdider.impl.pipeline.ConsolePipeline;
 import com.sdider.impl.pipeline.DefaultPipelineContainer;
+import com.sdider.impl.request.DefaultRequestConfigImpl;
 import com.sdider.impl.request.DefaultRequestContainer;
 import com.sdider.impl.response.DefaultResponseConverter;
 import com.sdider.utils.ClosureUtils;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
-import groovy.lang.GroovyRuntimeException;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,8 +37,9 @@ public class DefaultSdider extends AbstractSdider {
     private final DynamicPropertiesObject<Object> properties = new DefaultDynamicPropertiesObject<>();
     private final ExtensionContainer extensions = new DefaultExtensionContainer();
     private final Configuration configuration = new DefaultConfigurationImpl();
-    private final SdiderRequestContainer startRequests = new DefaultRequestContainer();
-    private final ResponseConverter responseConverter = new DefaultResponseConverter();
+    private final DefaultRequestFactory requestFactory = new DefaultRequestFactory();
+    private final SdiderRequestContainer startRequests = new DefaultRequestContainer(requestFactory);
+    private final ResponseConverter responseConverter = new DefaultResponseConverter(requestFactory);
     private final DefaultParserContainer parsers = new DefaultParserContainer();
     private final PipelineContainer pipelines = new DefaultPipelineContainer();
     private final LogConfiguration.Config logConfig = LogConfiguration.createConfig();
@@ -67,7 +70,7 @@ public class DefaultSdider extends AbstractSdider {
                 scriptExecutor.inject(new File(scriptFilePath));
             }
         } catch (IOException | URISyntaxException e) {
-            throw new GroovyRuntimeException(e);
+            throw new SdiderExecuteException(e);
         } finally {
             currentScriptName = temp;
         }
@@ -95,6 +98,15 @@ public class DefaultSdider extends AbstractSdider {
     @Override
     public void configuration(Closure configurationConfig) {
         ClosureUtils.delegateRun(configuration, configurationConfig);
+        if (configuration.has("requests")) {
+            Closure requests = (Closure) configuration.get("requests");
+            if (requests != null) {
+                RequestConfig requestConfig = new DefaultRequestConfigImpl();
+                ClosureUtils.delegateRun(requestConfig, requests);
+                requestFactory.setRequestConfig(requestConfig);
+                configuration.set("requests", null);
+            }
+        }
     }
 
     @Override
@@ -160,7 +172,7 @@ public class DefaultSdider extends AbstractSdider {
 
     @Override
     public void exceptionHandler(@DelegatesTo(ExceptionHolder.class) Closure exceptionHandlerAction) {
-        exceptionHandler = new ClosureExceptionHandler(responseConverter, exceptionHandlerAction);
+        exceptionHandler = new ClosureExceptionHandler(responseConverter,requestFactory, exceptionHandlerAction);
     }
 
     @Override
@@ -214,8 +226,19 @@ public class DefaultSdider extends AbstractSdider {
                 }
             });
         }
-        if (getPipelines().getEnabledPipelines().isEmpty()) {
-            getPipelines().enable(new ConsolePipeline(ConsolePipeline.DEFAULT_CONSOLE_PIPELINE_NAME));
+        if (configuration.has("pipelines")){
+            Closure pipelines = (Closure) configuration.get("pipelines");
+            if (pipelines != null) {
+                ClosureUtils.delegateRun(getPipelines(), pipelines);
+            }
         }
+        if (getPipelines().getEnabledPipelines().isEmpty()) {
+            getPipelines().enable(new ConsolePipeline());
+        }
+    }
+
+    @Override
+    protected void afterExecute() {
+        LogManager.shutdown();
     }
 }

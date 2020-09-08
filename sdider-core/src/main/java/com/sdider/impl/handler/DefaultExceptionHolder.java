@@ -5,6 +5,7 @@ import com.sdider.SdiderRequestContainer;
 import com.sdider.api.Request;
 import com.sdider.api.Response;
 import com.sdider.impl.request.DefaultRequestContainer;
+import com.sdider.impl.request.SdiderRequestFactory;
 import com.sdider.utils.ClosureUtils;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
@@ -17,11 +18,13 @@ public class DefaultExceptionHolder implements ExceptionHolder {
     private final Exception exception;
     private final Request request;
     private final Response response;
+    private final SdiderRequestFactory requestFactory;
 
-    public DefaultExceptionHolder(Exception exception, Request request, Response response) {
+    public DefaultExceptionHolder(Exception exception, Request request, Response response, SdiderRequestFactory requestFactory) {
         this.exception = exception;
         this.request = request;
         this.response = response;
+        this.requestFactory = requestFactory;
     }
 
     @Override
@@ -41,20 +44,12 @@ public class DefaultExceptionHolder implements ExceptionHolder {
 
     @Override
     public void targets(@DelegatesTo(SdiderRequestContainer.class) Closure<?> requestConfig) {
-        requestContainer = new DefaultRequestContainer();
+        requestContainer = new DefaultRequestContainer(request.getUrl(), requestFactory);
         ClosureUtils.delegateRun(requestContainer, requestConfig);
     }
 
     @Override
     public SdiderRequestContainer getTargets() {
         return requestContainer;
-    }
-
-    @Override
-    public String toString() {
-        return "DefaultExceptionHolder{" + "exception=" + exception +
-                ", request=" + request +
-                ", response=" + response +
-                '}';
     }
 }

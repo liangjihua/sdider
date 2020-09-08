@@ -66,7 +66,8 @@ public class DefaultItem extends GroovyObjectSupport implements SdiderItem {
 
     @Override
     public void setProperty(String propertyName, Object newValue) {
-        if (Objects.equals("request", propertyName) || Objects.equals("item", propertyName)) {
+        if (Objects.equals("request", propertyName) || Objects.equals("item", propertyName)
+                || Objects.equals("properties", propertyName)) {
             throw new ReadOnlyPropertyException(propertyName, this.getClass());
         }
         set(propertyName, newValue);

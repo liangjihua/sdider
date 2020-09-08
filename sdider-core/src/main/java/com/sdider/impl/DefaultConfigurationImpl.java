@@ -1,10 +1,9 @@
 package com.sdider.impl;
 
 import com.sdider.api.Configuration;
-import com.sdider.api.exception.NoSuchPropertyException;
 import com.sdider.impl.common.DefaultDynamicPropertiesObject;
 import com.sdider.impl.log.Logger;
-import com.sdider.impl.request.DefaultRequestConfigImpl;
+import com.sdider.util.Args;
 import com.sdider.utils.ClosureUtils;
 import groovy.lang.Closure;
 import groovy.lang.GroovyObjectSupport;
@@ -28,11 +27,7 @@ public class DefaultConfigurationImpl extends GroovyObjectSupport implements Con
 
     @Override
     public Object get(String name) {
-        try {
-            return properties.get(name);
-        } catch (NoSuchPropertyException ignored) {
-            return null;
-        }
+        return properties.get(name);
     }
 
     @Override
@@ -43,11 +38,6 @@ public class DefaultConfigurationImpl extends GroovyObjectSupport implements Con
     @Override
     public Map<String, Object> getProperties() {
         return properties.getProperties();
-    }
-
-    @SuppressWarnings("rawtypes")
-    public void requests(Closure requestConfig) { //todo 这种隐式的自动配置的设计不够直观，非常不好，需要做出调整
-        ClosureUtils.delegateRun(DefaultRequestConfigImpl.GLOBAL_REQUEST_CONFIG, requestConfig);
     }
 
     public Object methodMissing(String name, Object args) {
@@ -67,32 +57,38 @@ public class DefaultConfigurationImpl extends GroovyObjectSupport implements Con
     }
 
     @Override
-    public <T> void configure(T config) {
+    public <T> void configure(T configured) {
+        Args.notNull(configured, "configured");
         Set<String> keySet = getProperties().keySet();
         for (String key : keySet) {
-            setPropertySafe(config, key, get(key));
+            setPropertySafe(configured, key, get(key));
         }
     }
 
     private static void setPropertySafe(Object obj, String property, Object value) {
         try {
             InvokerHelper.setProperty(obj, property, value);
-        } catch (MissingPropertyException mpe) {
-            // Ignore
+        } catch (MissingPropertyException ignored) {
+            // ignore missing property, because we use ConfigurationKey as property here.
+        } catch (Exception exception) {
+            logger.warn("set property fail: {'targetObject':'{}', 'property':'{}', 'value':'{}', 'reason':'{}'}",
+                    obj, property, value, exception.getMessage(), exception);
         }
     }
 
     @Override
-    public <T> void configure(String name, T config) {
+    public <T> void configure(String name, T configured) {
+        Args.notNull(configured, "configured");
         if (!has(name)) {
-            logger.warn("configure skipped: {'key':'{}', 'configObj':'{}', 'reason':'specified configuration key not exists'}", name, config);
+            logger.warn("configure skipped: {'key':'{}', 'configObj':'{}'," +
+                    " 'reason':'specified configuration key not exists'}", name, configured);
             return;
         }
         Object value = get(name);
         if (value instanceof Closure) {
-            ClosureUtils.delegateRun(config, (Closure<?>) value);
+            ClosureUtils.delegateRun(configured, (Closure<?>) value);
         } else {
-            setPropertySafe(config, name, value);
+            setPropertySafe(configured, name, value);
         }
     }
 }

@@ -66,5 +66,26 @@ class DefaultParserContainerTest extends Specification {
         expect:
         parser === container.mainParser
         fooParser === container.foo
+
+        when:
+        container.getProperty('no-exists')
+
+        then:
+        thrown(MissingPropertyException)
+    }
+
+    def "setProperty"() {
+        def parser = Mock(ResponseParser)
+        when:
+        container.setProperty('foo', parser)
+
+        then:
+        parser == container.getByName('foo')
+
+        when:
+        container.setProperty('bar', 'bar')
+
+        then:
+        thrown(MissingPropertyException)
     }
 }

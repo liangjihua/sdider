@@ -98,6 +98,7 @@ class DefaultCrawlerTest {
     @Test
     void getMaxSize() {
         assertEquals(3, crawler.getMaxSize());
+        when(configuration.has("concurrentRequests")).thenReturn(true);
         when(configuration.get("concurrentRequests")).thenReturn(1);
         System.out.println(configuration.get("concurrentRequests"));
         crawler = new DefaultCrawler(parser, Collections.singletonList(pipeline), handler, configuration);

@@ -10,7 +10,7 @@ public class SdiderExecuteException extends RuntimeException{
         super(message);
     }
 
-    public SdiderExecuteException(String message, Throwable cause) {
-        super(message, cause);
+    public SdiderExecuteException(Throwable cause) {
+        super(cause);
     }
 }

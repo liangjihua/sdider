@@ -1,24 +1,49 @@
 package com.sdider.impl.request
 
 import com.sdider.SdiderRequest
-import spock.lang.Specification
 
-class DefaultRequestContainerTest extends Specification {
+class DefaultRequestContainerTest extends AbstractRequestContainerTest {
     DefaultRequestContainer container
+    SdiderRequestFactory requestFactory
 
     void setup() {
-        container = new DefaultRequestContainer()
+        container = Spy(requestContainer as DefaultRequestContainer)
+    }
+
+    @Override
+    protected AbstractRequestContainer create() {
+        requestFactory = Mock(SdiderRequestFactory)
+        return new DefaultRequestContainer(requestFactory)
     }
 
     def "Request"() {
+        given:
+        def request = Mock(SdiderRequest)
+        (1.._) * request.getUrl() >> 'http://foo.bar'
+
         when:
         container.request {
             POST 'http://foo.bar'
         }
         then:
-        1 == container.getRequests().size()
-        'http://foo.bar' == container.getRequests()[0].getUrl()
-        SdiderRequest.METHOD_POST == container.getRequests()[0].getMethod()
+        1 * requestFactory.create() >> request
+        1 * request.POST('http://foo.bar')
+        1 * container.addRequest(request)
+    }
+
+    def "request url is empty"() {
+        given:
+        requestFactory.create() >> Mock(SdiderRequest) {
+            getUrl() >> null
+        }
+
+        when:
+        container.request {}
+        container.request('')
+        container.request(null as String[])
+
+        then:
+        0 * container.addRequest(_)
     }
 
     def "request with urls"() {
@@ -28,10 +53,11 @@ class DefaultRequestContainerTest extends Specification {
         container.request('', null)
 
         then:
-        2 == container.getRequests().size()
-        'http://foo.bar' == container.getRequests()[0].getUrl()
-        SdiderRequest.METHOD_GET == container.getRequests()[0].getMethod()
-        'http://bar.foo' == container.getRequests()[1].getUrl()
-        SdiderRequest.METHOD_GET == container.getRequests()[1].getMethod()
+        2 * requestFactory.create() >> {
+            Mock(SdiderRequest) {
+                1 * GET(_)
+            }
+        }
+        2 * container.addRequest(_)
     }
 }

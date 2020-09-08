@@ -59,7 +59,8 @@ public abstract class Crawler {
     protected void processResponse(Response response) {
         try {
             Result result = parser.parse(response);
-            result.consume(pipelines);
+            List<Item> items = result.getItems();
+            items.forEach(item -> pipelines.forEach(item::consume));
             schedule(result.getRequests());
         } catch (Exception exception) {
             handleException(exception, response.getRequest(), response);

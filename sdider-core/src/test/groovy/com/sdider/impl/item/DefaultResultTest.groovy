@@ -1,7 +1,6 @@
 package com.sdider.impl.item
 
 import com.sdider.api.Item
-import com.sdider.api.Pipeline
 import com.sdider.api.Request
 import com.sdider.impl.request.AbstractRequestContainer
 import com.sdider.impl.request.AbstractRequestContainerTest
@@ -17,18 +16,7 @@ class DefaultResultTest extends AbstractRequestContainerTest {
     @Override
     protected AbstractRequestContainer create() {
         request = Mock()
-        return new DefaultResult(request)
-    }
-
-    def "Item"() {
-        when:
-        result.item {
-            set('foo', 'bar')
-        }
-
-        then:
-        1 == result.items.size()
-        'bar' == result.items[0].get('foo')
+        return new DefaultResult()
     }
 
     def "SetItems"() {
@@ -77,54 +65,18 @@ class DefaultResultTest extends AbstractRequestContainerTest {
         [item] == result.items
     }
 
-    def "Consume"() {
-        def pipeline = Mock(Pipeline)
+    def "RemoveItem"() {
+        given:
         def item = Mock(Item)
         def item2 = Mock(Item)
         result.addItem(item)
         result.addItem(item2)
 
         when:
-        result.consume([pipeline])
+        result.removeItem(item)
+        result.removeItem(null)
 
         then:
-        1 * item.consume(pipeline)
-        1 * item2.consume(pipeline)
-    }
-
-    def "Request"() {
-        result = Spy(result)
-        when:
-        result.request 'http://foo.bar'
-
-        then:
-        1 == result.getRequests().size()
-        'http://foo.bar' == result.getRequests()[0].getUrl()
-        'get'.equalsIgnoreCase(result.getRequests()[0].getMethod())
-        1 * result.urlClean('http://foo.bar')
-    }
-
-    def "TestRequest"() {
-        result = Spy(result)
-        when:
-        result.request {
-            POST 'http://foo.bar'
-        }
-
-        then:
-        1 == result.getRequests().size()
-        'http://foo.bar' == result.getRequests()[0].getUrl()
-        'post'.equalsIgnoreCase(result.getRequests()[0].getMethod())
-        1 * result.urlClean('http://foo.bar')
-    }
-
-    def "UrlClean"() {
-        request.getUrl() >> 'http://foo.bar'
-
-        expect:
-        'http://bar.bar' == result.urlClean('http://bar.bar')
-        'http://foo.bar?foo=bar&bar=foo' == result.urlClean('?foo=bar&bar=foo')
-        'http://foo.bar/foo' == result.urlClean('/foo')
-        'http://foo.bar/foo' == result.urlClean('foo')
+        [item2] == result.getItems()
     }
 }

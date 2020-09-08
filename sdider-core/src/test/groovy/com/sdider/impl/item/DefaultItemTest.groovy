@@ -1,6 +1,7 @@
 package com.sdider.impl.item
 
 import com.sdider.AbstractDynamicPropertiesObjectTest
+import com.sdider.api.Item
 import com.sdider.api.Pipeline
 import com.sdider.api.PipelineFilter
 import com.sdider.api.Request
@@ -117,6 +118,41 @@ class DefaultItemTest extends AbstractDynamicPropertiesObjectTest {
         then:
         1 == filters.size()
         filters[0].applicable(pipeline)
+    }
+
+    def "getProperty"() {
+        item.set('foo', 'bar')
+        expect:
+        request === item.getProperty("request")
+        item === item.getProperty("item")
+        item.getProperties() == item.getProperty("properties")
+        'bar' == item.getProperty('foo')
+
+        when:
+        item.getProperty('no-exists')
+
+        then:
+        thrown(MissingPropertyException)
+    }
+
+    def "setProperty: set #propertyName to #value"() {
+        when:
+        item.setProperty(propertyName, value)
+
+        then:
+        thrown(ReadOnlyPropertyException)
+
+        where:
+        propertyName << ['request', 'item', 'properties']
+        value << [Mock(Request), Mock(Item), [:]]
+    }
+
+    def "setProperty"() {
+        when:
+        item.setProperty('foo', 'bar')
+
+        then:
+        'bar' == item.get('foo')
     }
 
 }

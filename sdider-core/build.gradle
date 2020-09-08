@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     implementation project(':sdider-crawler-api')
+    implementation project(':sdider-base-service')
     implementation 'org.apache.ivy:ivy:2.5.0' //用于支持脚本使用注解声明内置依赖
     implementation 'org.jsoup:jsoup:1.13.1'
     implementation 'org.codehaus.groovy:groovy:3.0.5'

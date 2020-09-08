@@ -6,7 +6,7 @@ class DefaultExtensionContainerTest extends Specification {
     DefaultExtensionContainer container
 
     void setup() {
-        container = new DefaultExtensionContainer()
+        container = Spy(new DefaultExtensionContainer())
     }
 
     def "Add"() {
@@ -21,6 +21,16 @@ class DefaultExtensionContainerTest extends Specification {
         container.add('foo', null)
         then:
         thrown(Exception)
+    }
+
+    def "add duplicated key"() {
+        container.add('foo', 'bar')
+
+        when:
+        container.add('foo', 'rab')
+
+        then:
+        thrown(IllegalArgumentException)
     }
 
     def "GetByName"() {
@@ -45,5 +55,23 @@ class DefaultExtensionContainerTest extends Specification {
         container.add('foo', 'bar')
         then:
         container.contains('foo')
+    }
+
+    def "getProperty"() {
+        container.add('foo', 'bar')
+        when:
+        def result = container.getProperty('foo')
+
+        then:
+        1 * container.getByName('foo')
+        result == 'bar'
+    }
+
+    def "setProperty"() {
+        when:
+        container.setProperty('foo', 'bar')
+
+        then:
+        1 * container.add('foo', 'bar')
     }
 }

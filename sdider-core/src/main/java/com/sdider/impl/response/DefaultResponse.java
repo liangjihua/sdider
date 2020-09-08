@@ -1,13 +1,20 @@
 package com.sdider.impl.response;
 
 import com.sdider.ExtensionContainer;
+import com.sdider.SdiderItemContainer;
+import com.sdider.SdiderRequestContainer;
 import com.sdider.SdiderResponse;
-import com.sdider.SdiderResult;
 import com.sdider.api.Request;
 import com.sdider.api.Response;
+import com.sdider.api.Result;
 import com.sdider.constant.HttpHeader;
 import com.sdider.impl.common.DefaultExtensionContainer;
+import com.sdider.impl.item.DefaultItemContainer;
 import com.sdider.impl.item.DefaultResult;
+import com.sdider.impl.request.DefaultRequestContainer;
+import com.sdider.impl.request.SdiderRequestFactory;
+import com.sdider.utils.ClosureUtils;
+import groovy.lang.Closure;
 import groovy.lang.GroovyObjectSupport;
 
 import java.nio.charset.Charset;
@@ -20,21 +27,23 @@ import java.util.Map;
  */
 public class DefaultResponse extends GroovyObjectSupport implements SdiderResponse {
     private final Request request;
-    private final DefaultResult result;
     private final Response response;
     private ExtensionContainer extensionContainer;
     private String contentType;
     private Charset charset = StandardCharsets.UTF_8;
-    private volatile String text;
+    private String text;
     private final byte[] body;
     private final Map<String, String> headers;
+    private final SdiderRequestFactory factory;
+    private SdiderRequestContainer requestContainer;
+    private SdiderItemContainer itemContainer;
 
-    public DefaultResponse(Response response) {
+    public DefaultResponse(Response response, SdiderRequestFactory factory) {
         this.request = response.getRequest();
         this.response = response;
-        this.result = new DefaultResult(request);
         this.body = response.getBody();
         this.headers = response.getHeaders();
+        this.factory = factory;
         parseContentType();
     }
 
@@ -53,7 +62,29 @@ public class DefaultResponse extends GroovyObjectSupport implements SdiderRespon
     }
 
     @Override
-    public SdiderResult getResult() {
+    public void items(Closure<?> itemConfig) {
+        if (itemContainer == null) {
+            itemContainer = new DefaultItemContainer(request);
+        }
+        ClosureUtils.delegateRun(itemContainer, itemConfig);
+    }
+
+    @Override
+    public void targets(Closure<?> requestConfig) {
+        if (requestContainer == null) {
+            requestContainer = new DefaultRequestContainer(request.getUrl(), factory);
+        }
+        ClosureUtils.delegateRun(requestContainer, requestConfig);
+    }
+
+    public Result getResult(){
+        DefaultResult result = new DefaultResult();
+        if (requestContainer != null) {
+            result.setRequests(requestContainer.getRequests());
+        }
+        if (itemContainer != null) {
+            result.setItems(itemContainer.getItems());
+        }
         return result;
     }
 

@@ -163,4 +163,15 @@ class DefaultPipelineContainerTest extends Specification {
         expect:
         container.getAllNames().isEmpty()
     }
+
+    def "propertyMissing"() {
+        expect:
+        pipeline === container.propertyMissing("pipeline")
+
+        when:
+        container.propertyMissing("no-exists")
+
+        then:
+        thrown(MissingPropertyException)
+    }
 }

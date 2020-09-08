@@ -6,6 +6,7 @@ import com.sdider.PipelineContainer
 import com.sdider.SdiderRequestContainer
 import com.sdider.api.*
 import com.sdider.api.common.DynamicPropertiesObject
+import com.sdider.impl.exception.SdiderExecuteException
 import org.slf4j.Logger
 import spock.lang.Specification
 
@@ -13,6 +14,7 @@ class AbstractSdiderTest extends Specification {
     AbstractSdider sdider
     Closeable closeable
     ParserContainer parserContainer
+    PipelineContainer pipelineContainer
     CrawlerFactory factory
     Crawler crawler
     ExtensionContainer extensions
@@ -24,6 +26,7 @@ class AbstractSdiderTest extends Specification {
         properties = Mock()
         closeable = Mock()
         parserContainer = Mock()
+        pipelineContainer = Mock()
         crawler = Mock()
         factory = Mock(CrawlerFactory) {
             create(_, _, _, _) >> crawler
@@ -39,9 +42,7 @@ class AbstractSdiderTest extends Specification {
                 callRealMethod()
             }
             getParsers() >> parserContainer
-            getPipelines() >> Mock(PipelineContainer) {
-                getEnabledPipelines() >> [Mock(Pipeline)]
-            }
+            getPipelines() >> pipelineContainer
             getExceptionHandler() >> Mock(ExceptionHandler)
             getLogger() >> Mock(Logger)
             findCrawlerFactory() >> factory
@@ -52,27 +53,49 @@ class AbstractSdiderTest extends Specification {
     }
 
     def "Execute"() {
-        Configuration configuration = Mock(Configuration) {
-            get('pipelines') >> {
-                def clo = {
-                    closeable.close()
-                }
-                return clo
-            }
-        }
         parserContainer.getMainParser() >> Mock(ResponseParser)
-        sdider.getConfiguration() >> configuration
+        pipelineContainer.getEnabledPipelines() >> [Mock(Pipeline)]
         when:
         sdider.execute()
 
         then:
-        1 * closeable.close()
         1 * factory.create(_, _, _, _) >> crawler
         1 * sdider.callBeforeCrawl()
         1 * sdider.callAfterCrawl()
         1 * crawler.run()
         1 * sdider.beforeExecute()
         1 * sdider.afterExecute()
+    }
+
+    def "mainParser check"() {
+        when:
+        sdider.execute()
+
+        then:
+        1 * parserContainer.getMainParser() >> null
+        thrown(SdiderExecuteException)
+    }
+
+    def "exceptionHandler check"() {
+        parserContainer.getMainParser() >> Mock(ResponseParser)
+        pipelineContainer.getEnabledPipelines() >> [Mock(Pipeline)]
+
+        when:
+        sdider.execute()
+
+        then:
+        1 * sdider.getExceptionHandler() >> null
+        thrown(SdiderExecuteException)
+    }
+
+    def "enable pipelines check" () {
+        parserContainer.getMainParser() >> Mock(ResponseParser)
+        when:
+        sdider.execute()
+
+        then:
+        1 * pipelineContainer.getEnabledPipelines() >> []
+        thrown(SdiderExecuteException)
     }
 
     def "PropertyMissing"() {

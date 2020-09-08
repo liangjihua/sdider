@@ -1,7 +1,7 @@
 package com.sdider.impl.request;
 
-import com.sdider.SdiderRequestContainer;
 import com.sdider.api.Request;
+import com.sdider.api.RequestContainer;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -11,15 +11,19 @@ import java.util.List;
  * AbstractRequestContainer提供了支持存取{@link Request}的基本操作。
  * @author yujiaxin
  */
-public abstract class AbstractRequestContainer implements SdiderRequestContainer {
-    private List<Request> requests = new LinkedList<>();
+public abstract class AbstractRequestContainer implements RequestContainer {
+    protected List<Request> requests = new LinkedList<>();
 
+    /**
+     * @implNote 使用了 {@link #addRequest(Request)}来实现功能
+     */
     @Override
     public void setRequests(List<Request> requests) {
-        if (requests == null) {
-            this.requests = new LinkedList<>();
-        } else {
-            this.requests = new LinkedList<>(requests);
+        this.requests = new LinkedList<>();
+        if (requests != null) {
+            for (Request request : requests) {
+                addRequest(request);
+            }
         }
     }
 

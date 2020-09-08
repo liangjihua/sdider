@@ -6,8 +6,7 @@ class ExtensibleTest extends Specification {
     Extensible extensible
     ExtensionContainer extensions
 
-    @SuppressWarnings('unused')
-    void setup() {
+    def setup() {
         extensions = Mock()
         extensible = Mock() {
             propertyMissing(_) >> {
@@ -84,6 +83,18 @@ class ExtensibleTest extends Specification {
 
         when:
         extensible.foo()
+
+        then:
+        thrown(MissingMethodException)
+    }
+
+    def "call unsuitable extension"() {
+        extensible.getExtensions() >> extensions
+        1 * extensions.contains("foo") >> true
+        extensions.getByName('foo') >> new Object()
+
+        when:
+        extensible.foo('bar')
 
         then:
         thrown(MissingMethodException)

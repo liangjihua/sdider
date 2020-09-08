@@ -14,14 +14,13 @@ import static org.mockito.Mockito.*;
 class CrawlerTest extends AutoAnnotationsMockTest{
     private Crawler crawler;
     @Mock private ResponseParser parser;
-    private List<Pipeline> pipelines;
     @Mock private Pipeline pipeline;
     @Mock private ExceptionHandler exceptionHandler;
     @Mock private Configuration configuration;
 
     @BeforeEach
     void setUp() {
-        pipelines = spy(Collections.singletonList(pipeline));
+        List<Pipeline> pipelines = spy(Collections.singletonList(pipeline));
         crawler = mock(Crawler.class, withSettings()
                 .useConstructor(parser, pipelines, exceptionHandler, configuration).defaultAnswer(CALLS_REAL_METHODS));
     }
@@ -32,13 +31,16 @@ class CrawlerTest extends AutoAnnotationsMockTest{
         Response response = mock(Response.class);
         Result result = mock(Result.class);
         List requests = mock(List.class);
+        Item item = mock(Item.class);
         when(parser.parse(same(response))).thenReturn(result);
         when(result.getRequests()).thenReturn(requests);
+        when(result.getItems()).thenReturn(Collections.singletonList(item));
 
         crawler.processResponse(response);
 
         verify(parser).parse(same(response));
-        verify(result).consume(argThat(argument -> argument.equals(pipelines)));
+        verify(result).getItems();
+        verify(item).consume(same(pipeline));
         verify(result).getRequests();
         verify(crawler).schedule(eq(requests));
     }

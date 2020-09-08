@@ -7,11 +7,8 @@ import com.sdider.api.CrawlerFactory;
 import com.sdider.api.common.DynamicPropertiesObject;
 import com.sdider.impl.exception.SdiderExecuteException;
 import com.sdider.impl.log.Logger;
-import com.sdider.utils.ClosureUtils;
-import groovy.lang.Closure;
 import groovy.lang.GroovyObjectSupport;
 import groovy.lang.MissingPropertyException;
-import org.apache.logging.log4j.LogManager;
 
 import java.util.Iterator;
 import java.util.Objects;
@@ -32,11 +29,6 @@ public abstract class AbstractSdider extends GroovyObjectSupport implements Sdid
 
     public void execute() {
         beforeExecute();
-        //noinspection rawtypes
-        Closure pipelines = (Closure) getConfiguration().get("pipelines");
-        if (pipelines != null) {
-            ClosureUtils.delegateRun(getPipelines(), pipelines);
-        }
         checkConditions();
         Crawler crawler = createCrawler();
         crawler.startRequests(getStartRequests().getRequests());
@@ -47,10 +39,9 @@ public abstract class AbstractSdider extends GroovyObjectSupport implements Sdid
             crawler.run();
             callAfterCrawl();
         } catch (Exception exception) {
-            getLogger().error(exception.getMessage(), exception);
+            logger.error(exception.getMessage(), exception);
         } finally {
             afterExecute();
-            LogManager.shutdown();
             running.set(false);
             synchronized (running) {
                 running.notifyAll();
@@ -78,8 +69,11 @@ public abstract class AbstractSdider extends GroovyObjectSupport implements Sdid
 
     protected CrawlerFactory findCrawlerFactory() {
         ServiceLoader<CrawlerFactory> factories = ServiceLoader.load(CrawlerFactory.class);
-        String factoryClass = (String) getConfiguration().get("crawlerFactoryClass");
-        logger.debug("configuration.crawlerFactoryClass={}", factoryClass);
+        String factoryClass = null;
+        if (getConfiguration().has("crawlerFactoryClass")) {
+            factoryClass = (String) getConfiguration().get("crawlerFactoryClass");
+            logger.debug("configuration.crawlerFactoryClass={}", factoryClass);
+        }
         CrawlerFactory crawlerFactory = null;
         Iterator<CrawlerFactory> iterator = factories.iterator();
         while (iterator.hasNext()) {

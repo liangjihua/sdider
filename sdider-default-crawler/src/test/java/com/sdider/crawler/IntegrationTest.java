@@ -79,14 +79,12 @@ public class IntegrationTest {
             Item item = mock(Item.class);
             when(item.get("reason")).thenReturn(response.getReasonPhrase());
             when(item.get("body")).thenReturn(new String(response.getBody(), StandardCharsets.UTF_8));
-            doAnswer((cl) -> {
-                @SuppressWarnings("unchecked")
-                List<Pipeline> pipelines = cl.getArgument(0, List.class);
-                for (Pipeline p : pipelines) {
-                    p.process(item);
-                }
+            doAnswer(c -> {
+                Pipeline pipeline = c.getArgument(0, Pipeline.class);
+                pipeline.process((Item) c.getMock());
                 return null;
-            }).when(result).consume(anyList());
+            }).when(item).consume(any());
+            when(result.getItems()).thenReturn(Collections.singletonList(item));
             return result;
         });
         StringBuilder result = new StringBuilder();

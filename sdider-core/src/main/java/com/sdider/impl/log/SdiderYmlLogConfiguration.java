@@ -58,9 +58,4 @@ public class SdiderYmlLogConfiguration extends YamlConfiguration {
             resetNodeValue(child, propertyName, newValue);
         }
     }
-
-    @Override
-    protected void doConfigure() {
-        super.doConfigure();
-    }
 }

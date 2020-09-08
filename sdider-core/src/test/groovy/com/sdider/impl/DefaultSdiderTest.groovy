@@ -26,6 +26,17 @@ class DefaultSdiderTest extends Specification {
         'http://foo.bar' == startRequests[0].getUrl()
     }
 
+    def "apply classpath file"() {
+        when:
+        sdider.apply("classpath:sdider-test-plugin.sdider")
+        def startRequests = sdider.getStartRequests().getRequests()
+
+        then:
+        1 == startRequests.size()
+        'GET' == startRequests[0].getMethod()
+        'http://foo.bar' == startRequests[0].getUrl()
+    }
+
     def "Properties"() {
         when:
         sdider.properties {
@@ -68,6 +79,19 @@ class DefaultSdiderTest extends Specification {
 
         then:
         'bar' == sdider.getConfiguration().get('foo')
+    }
+
+    def "configuration requests"() {
+        when:
+        sdider.configuration {
+            requests {
+                closeable.close()
+                foo 'bar'
+            }
+        }
+
+        then:
+        1 * closeable.close()
     }
 
     def "GetConfiguration"() {
@@ -290,4 +314,18 @@ class DefaultSdiderTest extends Specification {
         getClass().getClassLoader().getResource(fileName).getFile()
     }
 
+    def "beforeExecute"() {
+        sdider.configuration {
+            pipelines {
+                closeable.close()
+            }
+        }
+        when:
+        sdider.beforeExecute()
+
+        then:
+        null != sdider.getExceptionHandler()
+        1 * closeable.close()
+        !sdider.getPipelines().getEnabledPipelines().isEmpty()
+    }
 }

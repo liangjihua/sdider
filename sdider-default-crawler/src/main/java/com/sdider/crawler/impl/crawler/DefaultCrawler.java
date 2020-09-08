@@ -29,7 +29,10 @@ public final class DefaultCrawler extends AbstractCrawler implements ActiveObjec
                           ExceptionHandler exceptionHandler,
                           Configuration configuration) {
         super(parser, pipeline, exceptionHandler, configuration);
-        int concurrentRequests = which((Integer) configuration.get("concurrentRequests"), 2);
+        int concurrentRequests = 2;
+        if (configuration.has("concurrentRequests")) {
+            concurrentRequests = which((Integer) configuration.get("concurrentRequests"), concurrentRequests);
+        }
         init(concurrentRequests);
     }
 

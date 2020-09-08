@@ -18,20 +18,10 @@ import java.util.Map;
 public class DefaultRequestImpl extends GroovyObjectSupport implements SdiderRequest {
     private String url;
     private String method;
-    private final RequestConfig requestConfig = new DefaultRequestConfigImpl();
     private String body;
+    private final RequestConfig requestConfig = new DefaultRequestConfigImpl();
     private final DefaultDynamicPropertiesObject<String> params = new DefaultDynamicPropertiesObject<>();
     private final DefaultDynamicPropertiesObject<Object> properties = new DefaultDynamicPropertiesObject<>();
-
-    public DefaultRequestImpl() {
-        DefaultRequestConfigImpl defaultRequestConfig = DefaultRequestConfigImpl.GLOBAL_REQUEST_CONFIG;
-        //todo 这个样子会有一个问题：sdider脚本中，用户自定义request类型无法得到这种全局request config的覆盖（除非用户手动调用一次）
-        //todo 结合DefaultConfigurationImpl中requests的实现去考虑，应该如何实现全局config的覆盖
-        //todo 同时还要考虑用户使用的问题，用户在脚本中会打印多次request.toString()，最好能让用户在任意时刻打印都能得到已经合并过全局config的request
-        //todo 应该尽量的延迟合并的时机，这样可以最大程度的保留全局config的灵活性，不至于被时序影响（全局request config必须在request之前配置）
-        requestConfig.setHeaders(defaultRequestConfig.getHeaders());
-        requestConfig.proxy(defaultRequestConfig.getProxy());
-    }
 
     @Override
     public void contentType(String contentType) {
