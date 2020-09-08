@@ -6,6 +6,7 @@ import com.sdider.api.Crawler;
 import com.sdider.api.CrawlerFactory;
 import com.sdider.api.common.DynamicPropertiesObject;
 import com.sdider.impl.exception.SdiderExecuteException;
+import com.sdider.impl.log.Logger;
 import com.sdider.utils.ClosureUtils;
 import groovy.lang.Closure;
 import groovy.lang.GroovyObjectSupport;
@@ -21,6 +22,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author yujiaxin
  */
 public abstract class AbstractSdider extends GroovyObjectSupport implements Sdider {
+    private static final Logger logger = Logger.getInstance(AbstractSdider.class);
+
     private final AtomicBoolean running = new AtomicBoolean(true);
 
     protected abstract void callBeforeCrawl();
@@ -69,14 +72,14 @@ public abstract class AbstractSdider extends GroovyObjectSupport implements Sdid
 
     protected Crawler createCrawler() {
         CrawlerFactory factory = findCrawlerFactory();
-        getLogger().debug("使用CrawlerFactory:{}", factory.getClass().getName());
+        logger.debug("使用CrawlerFactory:{}", factory.getClass().getName());
         return factory.create(getParsers(), getPipelines().getEnabledPipelines(), getExceptionHandler(), getConfiguration());
     }
 
     protected CrawlerFactory findCrawlerFactory() {
         ServiceLoader<CrawlerFactory> factories = ServiceLoader.load(CrawlerFactory.class);
         String factoryClass = (String) getConfiguration().get("crawlerFactoryClass");
-        getLogger().debug("configuration.crawlerFactoryClass={}", factoryClass);
+        logger.debug("configuration.crawlerFactoryClass={}", factoryClass);
         CrawlerFactory crawlerFactory = null;
         Iterator<CrawlerFactory> iterator = factories.iterator();
         while (iterator.hasNext()) {
@@ -89,7 +92,7 @@ public abstract class AbstractSdider extends GroovyObjectSupport implements Sdid
                     crawlerFactory = factory;
                     break;
                 } else if (!iterator.hasNext()) {
-                    getLogger().warn("未找到crawlerFactoryClass:{}", factoryClass);
+                    logger.warn("未找到crawlerFactoryClass:{}", factoryClass);
                 }
             } else {
                 break;

@@ -4,7 +4,6 @@ import com.sdider.api.ExceptionHandler
 import com.sdider.api.Item
 import com.sdider.api.Request
 import com.sdider.api.Response
-import spock.lang.Ignore
 import spock.lang.Specification
 
 class DefaultSdiderTest extends Specification {
@@ -77,7 +76,6 @@ class DefaultSdiderTest extends Specification {
         sdider.getConfiguration() == sdider.getConfiguration()
     }
 
-    @Ignore("log4j一旦初始化后就不会修改，有关log4j的测试不稳定，应该将log4j的相关部分解耦出来")
     def "Logger"() {
         when:
         sdider.logger {
@@ -85,12 +83,21 @@ class DefaultSdiderTest extends Specification {
         }
 
         then:
-        sdider.getLogger().isDebugEnabled()
+        'debug' == sdider.getLogConfig().getLevel()
     }
 
     def "TestLogger"() {
-        //todo 对于logger的测试，需要重新考虑，log4j一旦初始化一次，就不会被修改
-        //todo 应该将log4j的相关部分解耦出来
+        def config = getClassPathFile('log4j2-test.yml')
+        when:
+        sdider.logger(config)
+
+        then:
+        config == sdider.getLogConfig().getConfigLocation().toString()
+    }
+
+    def "GetLogger" () {
+        expect:
+        sdider.getLogger() == sdider.getLogger()
     }
 
     def "BeforeCrawl"() {

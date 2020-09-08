@@ -7,7 +7,8 @@ import com.sdider.impl.common.DefaultDynamicPropertiesObject;
 import com.sdider.impl.common.DefaultExtensionContainer;
 import com.sdider.impl.handler.ClosureExceptionHandler;
 import com.sdider.impl.handler.ExceptionHandlerBase;
-import com.sdider.impl.log.LogConfigAction;
+import com.sdider.impl.log.LogConfiguration;
+import com.sdider.impl.log.Logger;
 import com.sdider.impl.parser.ClosureParser;
 import com.sdider.impl.parser.DefaultParserContainer;
 import com.sdider.impl.pipeline.ClosurePipeline;
@@ -19,8 +20,6 @@ import com.sdider.utils.ClosureUtils;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.lang.GroovyRuntimeException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,23 +32,24 @@ import java.net.URISyntaxException;
  */
 @SuppressWarnings("rawtypes")
 public class DefaultSdider extends AbstractSdider {
-    private Closure beforeCrawl;
-    private Closure afterCrawl;
     private final DynamicPropertiesObject<Object> properties = new DefaultDynamicPropertiesObject<>();
     private final ExtensionContainer extensions = new DefaultExtensionContainer();
     private final Configuration configuration = new DefaultConfigurationImpl();
     private final SdiderRequestContainer startRequests = new DefaultRequestContainer();
     private final ResponseConverter responseConverter = new DefaultResponseConverter();
     private final DefaultParserContainer parsers = new DefaultParserContainer();
-    private ExceptionHandler exceptionHandler;
     private final PipelineContainer pipelines = new DefaultPipelineContainer();
+    private final LogConfiguration.Config logConfig = LogConfiguration.createConfig();
+    private Closure beforeCrawl;
+    private Closure afterCrawl;
+    private ExceptionHandler exceptionHandler;
     private final SdiderScriptExecutor scriptExecutor;
-    private Logger logger;
-    private final LogConfigAction logConfigAction;
+    private Logger scriptLogger;
     private String currentScriptName;
 
     public DefaultSdider(File script) throws IOException {
-        this.logConfigAction = new LogConfigAction(script.getName(), script.getName()+".log");
+        logConfig.setConfigName(script.getName());
+        logConfig.setFileName(script.getName() + ".log");
         currentScriptName = script.getName();
         scriptExecutor = new SdiderScriptExecutor(this);
         scriptExecutor.inject(script);
@@ -71,6 +71,10 @@ public class DefaultSdider extends AbstractSdider {
         } finally {
             currentScriptName = temp;
         }
+    }
+
+    public LogConfiguration.Config getLogConfig() {
+        return logConfig;
     }
 
     @Override
@@ -100,21 +104,21 @@ public class DefaultSdider extends AbstractSdider {
 
     @Override
     public void logger(Closure loggerConfig) {
-        logConfigAction.setConfigAction(loggerConfig);
+        ClosureUtils.delegateRun(logConfig, loggerConfig);
     }
 
     @Override
     public void logger(String configLocation) {
-        logConfigAction.setConfigLocation(URI.create(configLocation));
+        logConfig.setConfigLocation(URI.create(configLocation));
     }
 
     @Override
-    public Logger getLogger() {
-        if (logger == null) {
-            logConfigAction.doConfigure();
-            logger = LoggerFactory.getLogger("sdider");
+    public org.slf4j.Logger getLogger() {
+        if (scriptLogger == null) {
+            LogConfiguration.configure(logConfig);
+            scriptLogger = Logger.getInstance("sdider");
         }
-        return logger;
+        return scriptLogger;
     }
 
     @Override

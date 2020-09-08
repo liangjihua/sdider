@@ -4,10 +4,10 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
 /**
- *
+ * a wrapper for {@link org.slf4j.Logger}, delay creation of {@link org.slf4j.Logger} instance
  * @author yujiaxin
  */
-public class Logger {
+public class Logger implements org.slf4j.Logger {
     private volatile org.slf4j.Logger logger;
     private String name;
     private Class<?> clazz;

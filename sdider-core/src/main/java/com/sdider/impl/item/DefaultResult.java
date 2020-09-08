@@ -6,13 +6,12 @@ import com.sdider.SdiderResult;
 import com.sdider.api.Item;
 import com.sdider.api.Pipeline;
 import com.sdider.api.Request;
+import com.sdider.impl.log.Logger;
 import com.sdider.impl.request.AbstractRequestContainer;
 import com.sdider.impl.request.DefaultRequestImpl;
 import com.sdider.utils.ClosureUtils;
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,7 +23,7 @@ import java.util.List;
  * @author yujiaxin
  */
 public class DefaultResult extends AbstractRequestContainer implements SdiderResult {
-    private static final Logger logger = LoggerFactory.getLogger(DefaultResult.class);
+    private static final Logger logger = Logger.getInstance(DefaultResult.class);
     private List<Item> items = new ArrayList<>();
     private final Request request;
 

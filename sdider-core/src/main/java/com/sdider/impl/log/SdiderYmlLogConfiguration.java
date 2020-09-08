@@ -8,7 +8,6 @@ import org.apache.logging.log4j.core.config.yaml.YamlConfiguration;
 
 import java.util.Objects;
 
-import static com.sdider.impl.log.LogConfiguration.DEFAULT_CONFIGURATION;
 
 /**
  *
@@ -22,8 +21,8 @@ public class SdiderYmlLogConfiguration extends YamlConfiguration {
 
     @Override
     protected Level getDefaultStatus() {
-        if (DEFAULT_CONFIGURATION.getStatus() != null) {
-            return Level.toLevel(DEFAULT_CONFIGURATION.getStatus(), null);
+        if (LogConfiguration.getStatus() != null) {
+            return Level.toLevel(LogConfiguration.getStatus(), null);
         }
         return super.getDefaultStatus();
     }
@@ -31,14 +30,20 @@ public class SdiderYmlLogConfiguration extends YamlConfiguration {
     @Override
     public void setup() {
         super.setup();
-        if (DEFAULT_CONFIGURATION.getPattern() != null) {
-            resetNodeValue(rootNode, "Pattern", DEFAULT_CONFIGURATION.getPattern());
+        if (LogConfiguration.getConfigName() != null) {
+            rootNode.getAttributes().put("name", LogConfiguration.getConfigName());
         }
-        if (DEFAULT_CONFIGURATION.getFileName() != null) {
-            resetNodeValue(rootNode, "fileName", DEFAULT_CONFIGURATION.getFileName());
+        if (LogConfiguration.getStatus() != null) {
+            rootNode.getAttributes().put("status", LogConfiguration.getStatus());
         }
-        if (DEFAULT_CONFIGURATION.getLevel() != null) {
-            resetNodeValue(rootNode, "level", DEFAULT_CONFIGURATION.getLevel());
+        if (LogConfiguration.getPattern() != null) {
+            resetNodeValue(rootNode, "Pattern", LogConfiguration.getPattern());
+        }
+        if (LogConfiguration.getFileName() != null) {
+            resetNodeValue(rootNode, "fileName", LogConfiguration.getFileName());
+        }
+        if (LogConfiguration.getLevel() != null) {
+            resetNodeValue(rootNode, "level", LogConfiguration.getLevel());
         }
     }
 

@@ -58,7 +58,6 @@ public interface Sdider extends GroovyObject, Extensible {
     Configuration getConfiguration();
 
     /**
-     * //todo 对于logger闭包的定义描述需要修改。如果不是接口默认实现，不应该在接口里面限制死闭包的委托对象和处理方法，这回导致接口的实现力降低
      * 配置logger
      * @param loggerConfig logger配置闭包
      */
