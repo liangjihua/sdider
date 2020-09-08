@@ -81,7 +81,7 @@ public class DefaultResult extends AbstractRequestContainer implements SdiderRes
         }
         for (String url : urls) {
             if (url == null || url.trim().equals("")){
-                logger.debug("url skipped: {'url':{}, 'reason':'url is empty'}", url);
+                logger.debug("url skipped: {'url':'{}', 'reason':'url is empty'}", url);
                 continue;
             }
             url = urlClean(url);
