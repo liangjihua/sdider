@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import static com.sdider.crawler.util.ObjectUtils.or;
+import static com.sdider.util.ObjectUtils.or;
 
 /**
  * Crawler是一个同步运行的爬虫，它包含了自身运行所需要的所有信息。

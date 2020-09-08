@@ -5,7 +5,7 @@ import com.sdider.crawler.AbstractCrawler;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.sdider.crawler.util.ObjectUtils.which;
+import static com.sdider.util.ObjectUtils.which;
 
 
 /**

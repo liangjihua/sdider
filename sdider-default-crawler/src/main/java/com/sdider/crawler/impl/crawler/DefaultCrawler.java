@@ -6,13 +6,13 @@ import com.sdider.api.Pipeline;
 import com.sdider.api.ResponseParser;
 import com.sdider.crawler.AbstractCrawler;
 import com.sdider.crawler.common.ArrayQueue;
-import com.sdider.crawler.util.Assert;
+import com.sdider.util.Args;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static com.sdider.crawler.util.ObjectUtils.which;
+import static com.sdider.util.ObjectUtils.which;
 
 
 /**
@@ -71,7 +71,7 @@ public final class DefaultCrawler extends AbstractCrawler implements ActiveObjec
 
     @Override
     public void add(Command command) {
-        Assert.notNull(command, "command");
+        Args.notNull(command, "command");
         if (isCoreQueueFull()) {
             throw new IllegalStateException("Engine队列已满");
         }

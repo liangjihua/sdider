@@ -1,14 +1,13 @@
-package com.sdider.crawler.util;
+package com.sdider.util;
 
 import java.util.function.Supplier;
 
 /**
- *
  * @author yujiaxin
  */
 public class ObjectUtils {
-    private ObjectUtils() {
-    }
+    private ObjectUtils() {}
+
 
     public static <T> T which(T obj1, T obj2) {
         if (obj1 != null) return obj1;

@@ -1,0 +1,15 @@
+plugins {
+    id 'java'
+    id 'groovy'
+}
+
+dependencies {
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+    testImplementation 'org.spockframework:spock-core:2.0-M3-groovy-3.0'
+    testImplementation 'org.codehaus.groovy:groovy:3.0.5'
+    testImplementation 'cglib:cglib-nodep:3.3.0'
+}
+
+test {
+    useJUnitPlatform()
+}
