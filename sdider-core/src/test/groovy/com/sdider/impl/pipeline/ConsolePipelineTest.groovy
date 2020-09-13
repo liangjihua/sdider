@@ -35,7 +35,7 @@ class ConsolePipelineTest extends Specification {
         consolePipeline.process(item)
 
         then:
-        'request: null null\r\nitem: {\r\n    name=Monica\r\n    age=20\r\n}\r\n\r\n' == outputStream.toString()
+        String.format("request: null null%nitem: {%n    name=Monica%n    age=20%n}%n%n") == outputStream.toString()
 
     }
 
