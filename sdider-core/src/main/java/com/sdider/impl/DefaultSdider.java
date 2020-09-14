@@ -54,7 +54,7 @@ public class DefaultSdider extends AbstractSdider {
         logConfig.setConfigName(script.getName());
         logConfig.setFileName(script.getName() + ".log");
         currentScriptName = script.getName();
-        scriptExecutor = new SdiderScriptExecutor(this);
+        scriptExecutor = new SdiderScriptExecutor(this);//todo 在对象构造中发布该对象是一个隐患
         scriptExecutor.inject(script);
     }
     public static final String CLASSPATH_URL_PREFIX = "classpath:";
