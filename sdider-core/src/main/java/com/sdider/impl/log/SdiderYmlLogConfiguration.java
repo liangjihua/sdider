@@ -6,7 +6,7 @@ import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.Node;
 import org.apache.logging.log4j.core.config.yaml.YamlConfiguration;
 
-import java.util.Objects;
+import java.util.Map;
 
 
 /**
@@ -30,32 +30,26 @@ public class SdiderYmlLogConfiguration extends YamlConfiguration {
     @Override
     public void setup() {
         super.setup();
-        if (LogConfiguration.getConfigName() != null) {
-            rootNode.getAttributes().put("name", LogConfiguration.getConfigName());
-        }
-        if (LogConfiguration.getStatus() != null) {
-            rootNode.getAttributes().put("status", LogConfiguration.getStatus());
-        }
-        if (LogConfiguration.getPattern() != null) {
-            resetNodeValue(rootNode, "Pattern", LogConfiguration.getPattern());
-        }
-        if (LogConfiguration.getFileName() != null) {
-            resetNodeValue(rootNode, "fileName", LogConfiguration.getFileName());
-        }
-        if (LogConfiguration.getLevel() != null) {
-            resetNodeValue(rootNode, "level", LogConfiguration.getLevel());
-        }
-    }
-
-    private void resetNodeValue(Node node, String propertyName, String newValue) {
-        for (String key : node.getAttributes().keySet()) {
-            if (Objects.equals(key, propertyName)) {
-                node.getAttributes().put(key, newValue);
-                return;
+        if (rootNode.hasChildren() && rootNode.getChildren().get(0).getName().equalsIgnoreCase("Properties")) {
+            final Node first = rootNode.getChildren().get(0);
+            for (Node child : first.getChildren()) {
+                Map<String, String> attrs = child.getAttributes();
+                String value = null;
+                switch(attrs.get("name")) {
+                    case "fileName":
+                        value =  LogConfiguration.getFileName();
+                        break;
+                    case "level":
+                        value = LogConfiguration.getLevel();
+                        break;
+                    case "pattern":
+                        value = LogConfiguration.getPattern();
+                        break;
+                }
+                if (value != null) {
+                    attrs.put("value", value);
+                }
             }
-        }
-        for (Node child : node.getChildren()) {
-            resetNodeValue(child, propertyName, newValue);
         }
     }
 }

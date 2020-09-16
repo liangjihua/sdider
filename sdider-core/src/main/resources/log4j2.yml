@@ -7,25 +7,29 @@ Configuration:
   shutdownHook: disable
   properties:
     property:
-      name: fileName
-      value: sdider.log
+      - name: fileName
+        value: sdider.log
+      - name: level
+        value: error
+      - name: pattern
+        value: "%-d{yyyy-MM-dd HH:mm:ss} [%c]-[%p] %m%n"
   thresholdFilter:
-    level: debug
+    level: ${level}
   appenders:
     Console:
       name: STDOUT
       target: SYSTEM_OUT
       PatternLayout:
-        Pattern: "%-d{yyyy-MM-dd HH:mm:ss} [%c]-[%p] %m%n"
+        Pattern: ${pattern}
     RollingFile:
       name: ROLLING_FILE
       fileName: ${fileName}
       filePattern: "${fileName}-%d{yyyy-MM-dd}-%i.log.gz"
       PatternLayout:
-        Pattern: "%-d{yyyy-MM-dd HH:mm:ss} [%c]-[%p] %m%n"
+        Pattern: ${pattern}
       Filters:
         ThresholdFilter:
-          level: info
+          level: ${level}
       Policies:
         TimeBasedTriggeringPolicy:  # 按天分类
           modulate: true
@@ -34,8 +38,15 @@ Configuration:
         max: 100
 
   Loggers:
+    logger:
+      -
+        name: org.apache.hc
+        level: warn
+        AppenderRef:
+          - ref: STDOUT
+          - ref: ROLLING_FILE
     Root:
-      level: error
+      level: ${level}
       AppenderRef:
         - ref: STDOUT
         - ref: ROLLING_FILE
