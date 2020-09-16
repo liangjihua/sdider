@@ -217,6 +217,7 @@ public class DefaultSdider extends AbstractSdider {
 
     @Override
     protected void beforeExecute() {
+        getLogger();//trigger log init
         if (getExceptionHandler() == null) {
             exceptionHandler(new ExceptionHandlerBase(responseConverter) {
                 @Override
