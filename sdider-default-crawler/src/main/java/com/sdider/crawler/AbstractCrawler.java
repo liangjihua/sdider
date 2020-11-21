@@ -26,8 +26,8 @@ public abstract class AbstractCrawler extends Crawler {
     private final Config config;
 
     /**
-     * 添加一些起始请求。起始请求并不是必须的，通常Crawler只需要scheduler中
-     * 存有待爬取的{@link Request}即可工作。
+     * 初始化Crawler基本属性。使用{@link DefaultDownloader}作为下载器。
+     * use breadth first as default strategy。
      */
     public AbstractCrawler(ResponseParser parser,
                            List<Pipeline> pipeline,
