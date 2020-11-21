@@ -30,8 +30,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -127,8 +129,14 @@ public class DefaultDownloader implements Downloader {
         return new DefaultResponse(request, response);
     }
 
-    private SimpleHttpRequest buildRequest(Request request) throws URISyntaxException {
-        URI uri = new URI(request.getUrl());
+    //TODO :extract this method to be a tool class, it's hard to test as it's a private method currently.
+    private SimpleHttpRequest buildRequest(Request request) throws URISyntaxException, MalformedURLException {
+        URL url = new URL(request.getUrl());
+        //URIBuilder does not support set query string, setCustomQuery will conflict with addParameter,
+        // so it has to constructor with a URI instance.
+        URIBuilder uriBuilder = new URIBuilder(new URI(url.getProtocol(),
+                url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(),
+                url.getQuery(), url.getRef()));
         String body = request.getBody();
         ContentType contentType = request.getContentType() != null?ContentType.parse(request.getContentType()): ContentType.DEFAULT_TEXT;
         Map<String, String> params = request.getParams();
@@ -139,15 +147,12 @@ public class DefaultDownloader implements Downloader {
                                 .collect(Collectors.toList()), ContentType.APPLICATION_FORM_URLENCODED.getCharset());
                 contentType = ContentType.APPLICATION_FORM_URLENCODED;
             } else {
-                try {
-                    URIBuilder uriBuilder = new URIBuilder(request.getUrl());
-                    params.forEach(uriBuilder::addParameter);
-                    uri = uriBuilder.build();
-                } catch (final URISyntaxException ex) {
-                    // should never happen
-                }
+                params.forEach(uriBuilder::addParameter);
             }
         }
+        uriBuilder.setPath(url.getPath());// override path; the URI constructor will not converter chinese character that contains in path.
+        URI uri = uriBuilder.build();
+        System.out.println(uri);
         SimpleHttpRequest httpRequest = SimpleHttpRequests.create(request.getMethod(), uri);
         if (request.getHeaders() != null) {
             request.getHeaders().forEach(httpRequest::addHeader);
