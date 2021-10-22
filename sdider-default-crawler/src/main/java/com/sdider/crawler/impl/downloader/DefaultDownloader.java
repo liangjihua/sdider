@@ -152,8 +152,7 @@ public class DefaultDownloader implements Downloader {
         }
         uriBuilder.setPath(url.getPath());// override path; the URI constructor will not converter chinese character that contains in path.
         URI uri = uriBuilder.build();
-        System.out.println(uri);
-        SimpleHttpRequest httpRequest = SimpleHttpRequests.create(request.getMethod(), uri);
+        SimpleHttpRequest httpRequest = SimpleHttpRequests.create(request.getMethod(), uri.toASCIIString());
         if (request.getHeaders() != null) {
             request.getHeaders().forEach(httpRequest::addHeader);
         }
